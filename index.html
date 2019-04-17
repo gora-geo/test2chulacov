@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>тест2</title>
+	<meta charset="utf-8">
+</head>
+<style type="text/css">
+	#canvas{
+
+		background-color: #00000;
+		z-index: 0;
+		border: 1px solid;
+
+	}
+	
+</style>
+<body>
+
+
+
+	<canvas  width="400px" height="400px" id="canvas"></canvas>
+
+	
+		<script>
+			var point_kordx = [];
+			var point_kordy = [];
+			var newvalue1 = [];
+			var color = ["#FF0000","#FF00FF","#FFFF00","#00FF00","#00FFFF","#0000FF","#008000"];
+			var color_next = '';
+var canvas = document.getElementById('canvas');
+var readout = document.getElementById('readout');
+var context = canvas.getContext('2d');
+var spritesheet = new Image();
+
+// Functions
+function windowToCanvas(canvas, x, y) {
+  var bbox = canvas.getBoundingClientRect();
+  return { x: x - bbox.left * (canvas.width / bbox.width),
+    y: y - bbox.top * (canvas.height / bbox.height)
+  };
+}
+
+
+function updateReadout(x, y) {
+  readout.innerText = '(' + x.toFixed(0) + ', ' + y.toFixed(0) + ')';
+}
+
+function point(x, y) {
+	var ctx = canvas.getContext("2d");
+ctx.beginPath();
+ctx.arc(x,y,5,0,2*Math.PI);
+ctx.stroke();
+var gg = newvalue1.length;
+if (gg < 3) {
+
+ctx.fillStyle = "#000000";
+ctx.strokeStyle = "#000000";
+}
+else {
+	color_next=Math.floor(Math.random() * color.length);
+    console.log(color_next)
+	ctx.fillStyle = color[color_next];
+	ctx.strokeStyle = color[color_next];
+
+
+
+}
+ctx.fill();
+var d = point_kordx.length;
+var z = point_kordy.length;
+point_kordx[d] = x;
+point_kordy[z] = y;
+console.log('x=',point_kordx[d]);
+console.log('y=',point_kordy[z]);
+
+
+  
+}
+function lineone() {
+	var ctx1 = canvas.getContext("2d");
+	var g = newvalue1.length;
+	
+	if (g == 2) {
+			ctx1.moveTo(point_kordx[g-2], point_kordy[g-2]);
+            ctx1.lineTo(point_kordx[g-1], point_kordy[g-1]);
+            ctx1.lineWidth = 3;
+            ctx1.stroke();
+        	
+
+        	}
+    if (g > 2) {
+			ctx1.moveTo(point_kordx[g-1], point_kordy[g-1]);
+            ctx1.lineTo(point_kordx[g-2], point_kordy[g-2]);
+            ctx1.moveTo(point_kordx[g-1], point_kordy[g-1]);
+            ctx1.lineTo(point_kordx[g-3], point_kordy[g-3]);
+            ctx1.stroke();
+        	
+
+        	}
+
+	}
+  
+
+
+// Event handlers
+
+canvas.onmousedown = function (e) {
+	if (window.localStorage) {
+       var value = localStorage.getItem('count'),
+       newvalue = isFinite(value) ? ++value : 0;
+
+       localStorage.setItem('count', newvalue);
+       console.log(newvalue);
+       newvalue1[newvalue1.length]=newvalue1;
+       console.log(newvalue1.length);
+
+     }
+	var loc = windowToCanvas(canvas, e.clientX, e.clientY);
+	point(loc.x, loc.y);
+	
+
+   /*  point(loc.x, loc.y);*/
+     lineone();
+
+
+    // Код для нажатия мыши
+};
+
+
+
+
+</script>
+
+</body>
+</html>
